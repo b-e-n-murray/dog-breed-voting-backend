@@ -68,12 +68,16 @@ app.get("/dogs/leaderboard", async (req, res) => {
 });
 
 app.patch("dogs/breed/vote", async (req, res) => {
-  const { breedName } = req.body;
+  const { breedname } = req.body;
+  const score = 1
   try {
-    const text = "update votes set score = score+1 where breedname = $1";
-    const values = [breedName];
+    const text = "update votes set score = score+$2 where breedname = $1";
+    const values = [breedname, score];
     const response = await client.query(text, values);
-    res.status(200).send(response.rows);
+    res.status(200).json({
+      status:"success", 
+      data: response.rows
+    })
   } catch (err) {
     console.error(err);
   }
