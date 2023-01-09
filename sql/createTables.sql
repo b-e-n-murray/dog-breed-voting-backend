@@ -1,8 +1,9 @@
-DROP TABLE IF EXISTS food;
+DROP TABLE IF EXISTS votes;
 
-CREATE TABLE  food (
+CREATE TABLE  votes (
     id          serial PRIMARY KEY,
-    title       varchar(40) NOT NULL
+    breedName   text not null,
+    score integer default 0
 );
 
-INSERT INTO food (title) VALUES ('sourdough'), ('olive oil'), ('pizza'), ('picanha'), ('gorgonzola'), ('basil');
+INSERT INTO votes (breedName) VALUES ('api.name')
