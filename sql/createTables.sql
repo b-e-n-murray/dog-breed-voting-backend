@@ -7,3 +7,4 @@ CREATE TABLE  votes (
 );
 
 INSERT INTO votes (breedName) VALUES ('api.name')
+

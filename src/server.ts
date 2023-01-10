@@ -67,8 +67,9 @@ app.get("/dogs/leaderboard", async (req, res) => {
   }
 });
 
-app.patch("dogs/breed/vote", async (req, res) => {
+app.patch("/dogs/breed/vote", async (req, res) => {
   const { breedname } = req.body;
+  console.log(breedname);
   const score = 1;
   try {
     const text = "update votes set score = score+$2 where breedname = $1";
@@ -91,26 +92,24 @@ interface nameListI {
   [breedName: string]: string[];
 }
 
+//one use function to initially add all breed names into database
 const addBreedNamesToDB = async (breedNames: namesI) => {
-  try {
-    const dogNamesArray = Object.keys(breedNames.message);
-    const dogSubNamesArray = Object.values(breedNames.message);
-    const filteredDogArray = dogSubNamesArray.filter(
-      (nameAr) => nameAr.length > 0
-    );
-    for (const item of filteredDogArray) {
-      for (const arrayItem of item) {
-        dogNamesArray.push(arrayItem);
+  const breedNamesArr:string[] = []
+  for(const key of Object.keys(breedNames.message)){
+    const subBreeds = breedNames.message[key]
+    if(subBreeds.length===0){ //[] | ["german"]
+      breedNamesArr.push(key)
+    }else{
+      for(const name of subBreeds){
+        breedNamesArr.push(`${key}/${name}`)
       }
     }
-    console.log(dogNamesArray);
-    const text = "insert into votes (breedName) values ($1) returning *";
-    for (const name of dogNamesArray) {
-      const response = await client.query(text, [name]);
-      console.log(response);
-    }
-  } catch (err) {
-    console.error(err);
+
+  }
+  const text = "insert into votes (breedName) values ($1) returning *";
+  for (const name of breedNamesArr) {
+    const response = await client.query(text, [name]);
+    console.log(response);
   }
 };
 
