@@ -94,17 +94,17 @@ interface nameListI {
 
 //one use function to initially add all breed names into database
 const addBreedNamesToDB = async (breedNames: namesI) => {
-  const breedNamesArr:string[] = []
-  for(const key of Object.keys(breedNames.message)){
-    const subBreeds = breedNames.message[key]
-    if(subBreeds.length===0){ //[] | ["german"]
-      breedNamesArr.push(key)
-    }else{
-      for(const name of subBreeds){
-        breedNamesArr.push(`${key}/${name}`)
+  const breedNamesArr: string[] = [];
+  for (const key of Object.keys(breedNames.message)) {
+    const subBreeds = breedNames.message[key];
+    if (subBreeds.length === 0) {
+      //[] | ["german"]
+      breedNamesArr.push(key);
+    } else {
+      for (const name of subBreeds) {
+        breedNamesArr.push(`${key}/${name}`);
       }
     }
-
   }
   const text = "insert into votes (breedName) values ($1) returning *";
   for (const name of breedNamesArr) {
